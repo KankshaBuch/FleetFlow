@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>FleetFlow Dashboard</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<script>
+  fetch("sidebar.html")
+    .then(res => res.text())
+    .then(data => {
+      document.getElementById("sidebar").innerHTML = data;
+
+      // Highlight active page
+      const current = window.location.pathname.split("/").pop();
+      document.querySelectorAll(".nav-link").forEach(link => {
+        if (link.getAttribute("href") === current) {
+          link.classList.add("bg-indigo-600", "text-white", "font-medium");
+        }
+      });
+    });
+</script>
+<body class="bg-slate-50 text-slate-800">
+
+<div class="flex min-h-screen">
+
+    <div id="sidebar"></div>
+  <!-- Main Content -->
+  <main class="flex-1 p-8 space-y-8">
+
+    <!-- Header -->
+    <div>
+      <h2 class="text-2xl font-semibold">Dashboard</h2>
+      <p class="text-slate-500 text-sm">Fleet overview & key metrics</p>
+    </div>
+
+    <!-- Metrics -->
+    <div class="grid grid-cols-4 gap-6">
+
+      <div class="bg-white border border-slate-200 rounded-xl shadow-sm p-6">
+        <p class="text-slate-500 text-sm">Total Vehicles</p>
+        <h3 class="text-3xl font-semibold mt-2">5</h3>
+      </div>
+
+      <div class="bg-white border border-slate-200 rounded-xl shadow-sm p-6">
+        <p class="text-slate-500 text-sm">Active</p>
+        <h3 class="text-3xl font-semibold mt-2 text-emerald-600">1</h3>
+      </div>
+
+      <div class="bg-white border border-slate-200 rounded-xl shadow-sm p-6">
+        <p class="text-slate-500 text-sm">Maintenance</p>
+        <h3 class="text-3xl font-semibold mt-2 text-rose-600">4</h3>
+      </div>
+
+      <div class="bg-white border border-slate-200 rounded-xl shadow-sm p-6">
+        <p class="text-slate-500 text-sm">Utilization</p>
+        <h3 class="text-3xl font-semibold mt-2 text-indigo-600">20%</h3>
+      </div>
+
+    </div>
+
+    <!-- Status Section -->
+    <div class="grid grid-cols-2 gap-6">
+
+      <!-- Vehicle Status -->
+      <div class="bg-white border border-slate-200 rounded-xl shadow-sm p-6">
+        <h4 class="font-medium mb-4">Vehicle Status</h4>
+
+        <div class="space-y-3 text-sm">
+
+          <div class="flex justify-between items-center">
+            <div>
+              <p class="font-medium">Freightliner Cascadia</p>
+              <p class="text-slate-500 text-xs">FL-2024-A</p>
+            </div>
+            <span class="px-3 py-1 rounded-full text-xs font-medium bg-rose-100 text-rose-600">
+              IN SHOP
+            </span>
+          </div>
+
+          <div class="flex justify-between items-center">
+            <div>
+              <p class="font-medium">Volvo VNL 860</p>
+              <p class="text-slate-500 text-xs">VL-2024-B</p>
+            </div>
+            <span class="px-3 py-1 rounded-full text-xs font-medium bg-indigo-100 text-indigo-600">
+              ON TRIP
+            </span>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- Active Trips -->
+      <div class="bg-white border border-slate-200 rounded-xl shadow-sm p-6">
+        <h4 class="font-medium mb-4">Active Trips</h4>
+
+        <div class="text-sm">
+          <p class="font-medium">Chicago, IL → Detroit, MI</p>
+          <p class="text-slate-500 text-xs mt-1">
+            Volvo VNL 860 · Sarah Chen · 15000kg
+          </p>
+          <span class="inline-block mt-3 px-3 py-1 rounded-full text-xs font-medium bg-indigo-100 text-indigo-600">
+            IN PROGRESS
+          </span>
+        </div>
+
+      </div>
+
+    </div>
+
+  </main>
+
+</div>
+
+</body>
+</html>

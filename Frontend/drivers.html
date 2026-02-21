@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Driver Profiles - FleetFlow</title>
+<script src="https://cdn.tailwindcss.com"></script>
+</head>
+
+<body class="bg-slate-100">
+
+<div class="flex min-h-screen">
+
+  <!-- Sidebar -->
+  <div id="sidebar"></div>
+
+  <!-- Main Content -->
+  <div class="flex-1 p-8">
+
+    <!-- Header -->
+    <div class="flex justify-between items-center mb-8">
+      <div>
+        <h1 class="text-3xl font-bold text-slate-800">Driver Profiles</h1>
+        <p class="text-slate-500 text-sm">Manage drivers & license compliance</p>
+      </div>
+
+      <button class="bg-blue-600 hover:bg-blue-700 text-white px-5 py-2 rounded-lg text-sm font-medium shadow">
+        + Add Driver
+      </button>
+    </div>
+
+    <!-- Drivers Grid -->
+    <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
+
+      <!-- DRIVER CARD START -->
+      <!-- Replace static data with backend loop -->
+
+      <div class="bg-white rounded-xl border border-slate-200 p-6 shadow-sm hover:shadow-md transition">
+
+        <!-- Top Section -->
+        <div class="flex justify-between items-start mb-4">
+          <div>
+            <h2 class="text-lg font-semibold text-slate-800">
+              Raj Patel
+            </h2>
+            <p class="text-xs text-slate-400">D001</p>
+          </div>
+
+          <!-- Status Badge -->
+          <span class="px-3 py-1 text-xs font-medium rounded-full bg-green-100 text-green-700">
+            AVAILABLE
+          </span>
+        </div>
+
+        <!-- Details -->
+        <div class="space-y-2 text-sm text-slate-600">
+          <p>License: GJ123456</p>
+          <p>
+            Expires:
+            <span class="font-medium text-slate-800">
+              2027
+            </span>
+          </p>
+          <p>Phone: +91 98765 43210</p>
+        </div>
+
+        <!-- Expired Warning (show only if expired) -->
+        <!-- Remove this div dynamically if not expired -->
+        <!--
+        <div class="mt-4 bg-red-50 border border-red-200 text-red-600 text-xs p-3 rounded-lg">
+          ⚠ License expired — Cannot be assigned to trips
+        </div>
+        -->
+
+      </div>
+      <!-- DRIVER CARD END -->
+
+
+
+      <!-- Example Expired Card -->
+
+      <div class="bg-white rounded-xl border border-red-300 p-6 shadow-sm">
+
+        <div class="flex justify-between items-start mb-4">
+          <div>
+            <h2 class="text-lg font-semibold text-slate-800">
+              Amit Sharma
+            </h2>
+            <p class="text-xs text-slate-400">D002</p>
+          </div>
+
+          <span class="px-3 py-1 text-xs font-medium rounded-full bg-yellow-100 text-yellow-700">
+            ON TRIP
+          </span>
+        </div>
+
+        <div class="space-y-2 text-sm text-slate-600">
+          <p>License: MH987654</p>
+          <p>
+            Expires:
+            <span class="font-medium text-red-600">
+              2023
+            </span>
+          </p>
+          <p>Phone: +91 87654 32109</p>
+        </div>
+
+        <div class="mt-4 bg-red-50 border border-red-200 text-red-600 text-xs p-3 rounded-lg">
+          ⚠ License expired — Cannot be assigned to trips
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+</div>
+
+<script>
+fetch("sidebar.html")
+  .then(res => res.text())
+  .then(data => {
+    document.getElementById("sidebar").innerHTML = data;
+
+    const current = window.location.pathname.split("/").pop();
+    document.querySelectorAll(".nav-link").forEach(link => {
+      if (link.getAttribute("href") === current) {
+        link.classList.add("bg-indigo-600","text-white","font-medium");
+      }
+    });
+  });
+</script>
+
+</body>
+</html>

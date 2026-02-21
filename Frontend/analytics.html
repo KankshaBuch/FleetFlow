@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Analytics</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<script>
+fetch("sidebar.html")
+  .then(res => res.text())
+  .then(data => {
+    document.getElementById("sidebar").innerHTML = data;
+
+    const current = window.location.pathname.split("/").pop();
+
+    document.querySelectorAll(".nav-link").forEach(link => {
+      if (link.getAttribute("href") === current) {
+        link.classList.add("bg-indigo-600", "text-white", "font-medium");
+      }
+    });
+  });
+</script>
+<body class="bg-slate-50 text-slate-800">
+
+<div class="flex min-h-screen">
+
+  <div id="sidebar"></div>
+
+  <!-- MAIN CONTENT -->
+  <main class="flex-1 p-8 space-y-8">
+
+    <!-- Header -->
+    <div>
+      <h2 class="text-2xl font-semibold">Analytics</h2>
+      <p class="text-slate-500 text-sm">Vehicle ROI & financial performance</p>
+    </div>
+
+    <!-- Summary Cards -->
+    <div class="grid grid-cols-3 gap-6">
+
+      <div class="bg-white border border-slate-200 rounded-xl shadow-sm p-6">
+        <p class="text-slate-500 text-sm">Total Revenue</p>
+        <h3 class="text-2xl font-semibold mt-2">$188,000</h3>
+      </div>
+
+      <div class="bg-white border border-slate-200 rounded-xl shadow-sm p-6">
+        <p class="text-slate-500 text-sm">Total Expenses</p>
+        <h3 class="text-2xl font-semibold mt-2">$67,200</h3>
+      </div>
+
+      <div class="bg-white border border-slate-200 rounded-xl shadow-sm p-6">
+        <p class="text-slate-500 text-sm">Net Profit</p>
+        <h3 class="text-2xl font-semibold mt-2 text-emerald-600">
+          $120,800
+        </h3>
+      </div>
+
+    </div>
+
+    <!-- ROI Table -->
+    <div class="bg-white border border-slate-200 rounded-xl shadow-sm overflow-hidden">
+
+      <div class="p-6 border-b border-slate-200">
+        <h4 class="font-medium">Vehicle ROI Breakdown</h4>
+        <p class="text-slate-500 text-xs mt-1">
+          Formula: (Revenue − Maintenance − Fuel) / Buy Price × 100
+        </p>
+      </div>
+
+      <table class="w-full text-sm">
+
+        <thead class="bg-slate-100 text-slate-600 uppercase text-xs tracking-wider">
+          <tr>
+            <th class="px-6 py-4 text-left">Vehicle</th>
+            <th class="px-6 py-4 text-left">Revenue</th>
+            <th class="px-6 py-4 text-left">Profit</th>
+            <th class="px-6 py-4 text-left">ROI</th>
+          </tr>
+        </thead>
+
+        <tbody>
+
+          <tr class="border-t border-slate-200 hover:bg-slate-50 transition">
+            <td class="px-6 py-4 font-medium">Freightliner Cascadia</td>
+            <td class="px-6 py-4">$45,000</td>
+            <td class="px-6 py-4 text-emerald-600">$28,000</td>
+            <td class="px-6 py-4 text-emerald-600 font-medium">18.7%</td>
+          </tr>
+
+          <tr class="border-t border-slate-200 hover:bg-slate-50 transition">
+            <td class="px-6 py-4 font-medium">Volvo VNL 860</td>
+            <td class="px-6 py-4">$62,000</td>
+            <td class="px-6 py-4 text-emerald-600">$44,500</td>
+            <td class="px-6 py-4 text-emerald-600 font-medium">26.2%</td>
+          </tr>
+
+        </tbody>
+
+      </table>
+
+    </div>
+
+    <!-- ROI Progress -->
+    <div class="bg-white border border-slate-200 rounded-xl shadow-sm p-6 space-y-4">
+
+      <h4 class="font-medium">ROI Comparison</h4>
+
+      <div>
+        <p class="text-sm mb-1">Freightliner Cascadia</p>
+        <div class="w-full bg-slate-200 rounded-full h-2">
+          <div class="bg-emerald-500 h-2 rounded-full" style="width: 18%"></div>
+        </div>
+      </div>
+
+      <div>
+        <p class="text-sm mb-1">Volvo VNL 860</p>
+        <div class="w-full bg-slate-200 rounded-full h-2">
+          <div class="bg-emerald-500 h-2 rounded-full" style="width: 26%"></div>
+        </div>
+      </div>
+
+    </div>
+
+  </main>
+
+</div>
+
+</body>
+</html>

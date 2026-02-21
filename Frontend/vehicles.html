@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Vehicle Registry</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+
+<body class="bg-slate-50 text-slate-800">
+
+<div class="flex min-h-screen">
+
+  <!-- Sidebar -->
+  <div id="sidebar"></div>
+
+  <!-- Main Content -->
+  <main class="flex-1 p-8 space-y-6">
+
+    <div class="flex justify-between items-center">
+      <div>
+        <h2 class="text-2xl font-semibold">Vehicle Registry</h2>
+        <p class="text-slate-500 text-sm">Manage your fleet vehicles</p>
+      </div>
+    </div>
+
+    <!-- Add Vehicle Form -->
+    <div class="bg-white border border-slate-200 rounded-xl shadow-sm p-6">
+      <form id="vehicleForm" class="grid grid-cols-4 gap-4">
+
+        <input id="vehicleName" type="text" placeholder="Vehicle Name"
+          class="border px-3 py-2 rounded-lg" required>
+
+        <input id="vehiclePlate" type="text" placeholder="Plate Number"
+          class="border px-3 py-2 rounded-lg" required>
+
+        <input id="vehicleLoad" type="number" placeholder="Max Load (kg)"
+          class="border px-3 py-2 rounded-lg" required>
+
+        <input id="vehiclePrice" type="number" placeholder="Buy Price"
+          class="border px-3 py-2 rounded-lg" required>
+
+        <button type="submit"
+          class="bg-indigo-600 text-white px-4 py-2 rounded-lg col-span-4">
+          + Add Vehicle
+        </button>
+
+      </form>
+    </div>
+
+    <!-- Table -->
+    <div class="bg-white border border-slate-200 rounded-xl shadow-sm overflow-hidden">
+      <table class="w-full text-sm">
+
+        <thead class="bg-slate-100 text-slate-600 uppercase text-xs">
+          <tr>
+            <th class="text-left px-6 py-4">ID</th>
+            <th class="text-left px-6 py-4">Name</th>
+            <th class="text-left px-6 py-4">Plate</th>
+            <th class="text-left px-6 py-4">Max Load</th>
+            <th class="text-left px-6 py-4">Buy Price</th>
+            <th class="text-left px-6 py-4">Action</th>
+          </tr>
+        </thead>
+
+        <tbody id="vehicleTable"></tbody>
+
+      </table>
+    </div>
+
+  </main>
+</div>
+
+<script>
+    document.addEventListener("click", function (e) {
+  if (e.target.classList.contains("delete-btn")) {
+    const id = e.target.getAttribute("data-id");
+    deleteVehicle(id);
+  }
+});
+const API_URL = "http://127.0.0.1:8000";
+
+/* Sidebar Loader */
+fetch("sidebar.html")
+  .then(res => res.text())
+  .then(data => {
+    document.getElementById("sidebar").innerHTML = data;
+
+    const current = window.location.pathname.split("/").pop();
+    document.querySelectorAll(".nav-link").forEach(link => {
+      if (link.getAttribute("href") === current) {
+        link.classList.add("bg-indigo-600", "text-white", "font-medium");
+      }
+    });
+  });
+
+/* Load Vehicles */
+document.addEventListener("DOMContentLoaded", () => {
+  loadVehicles();
+});
+
+async function loadVehicles() {
+  try {
+    const res = await fetch(`${API_URL}/vehicles`);
+    const vehicles = await res.json();
+
+    const table = document.getElementById("vehicleTable");
+    table.innerHTML = "";
+
+    vehicles.forEach(v => {
+      const row = document.createElement("tr");
+      row.classList.add("border-t");
+    row.innerHTML = `
+  <td class="px-6 py-4">${v.id}</td>
+  <td class="px-6 py-4 font-medium">${v.name}</td>
+  <td class="px-6 py-4">${v.plate}</td>
+  <td class="px-6 py-4">${v.max_weight}</td>
+  <td class="px-6 py-4">${v.buy_price}</td>
+  <td class="px-6 py-4">
+    <button data-id="${v.id}" 
+      class="delete-btn bg-red-500 text-white px-3 py-1 rounded-lg text-xs">
+      Delete
+    </button>
+  </td>
+`;
+      table.appendChild(row);
+    });
+
+  } catch (error) {
+    console.error("Error loading vehicles:", error);
+  }
+}
+
+/* Add Vehicle */
+document.getElementById("vehicleForm").addEventListener("submit", async function(e) {
+  e.preventDefault();
+
+  const name = document.getElementById("vehicleName").value;
+  const plate = document.getElementById("vehiclePlate").value;
+  const max_weight = document.getElementById("vehicleLoad").value;
+  const buy_price = document.getElementById("vehiclePrice").value;
+
+  try {
+    await fetch(`${API_URL}/vehicles`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        name,
+        plate,
+        max_weight,
+        buy_price
+      })
+    });
+
+    loadVehicles();
+    this.reset();
+
+  } catch (error) {
+    console.error("Error adding vehicle:", error);
+  }
+});
+
+/* Delete Vehicle */
+async function deleteVehicle(id) {
+  if (!confirm("Are you sure you want to delete this vehicle?")) return;
+
+  try {
+    const res = await fetch(`${API_URL}/vehicles/${id}`, {
+      method: "DELETE"
+    });
+
+    const data = await res.json();
+    console.log("Delete response:", data);
+
+    if (res.ok) {
+      // Remove row immediately from UI
+      const rows = document.querySelectorAll("#vehicleTable tr");
+      rows.forEach(row => {
+        if (row.firstElementChild.textContent == id) {
+          row.remove();
+        }
+      });
+    } else {
+      alert(data.error || "Delete failed");
+    }
+
+  } catch (error) {
+    console.error("Error deleting vehicle:", error);
+  }
+}
+</script>
+
+</body>
+</html>

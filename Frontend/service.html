@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Service Logs - FleetFlow</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+
+<body class="bg-slate-100">
+
+<div class="flex min-h-screen">
+
+  <!-- Sidebar -->
+  <div id="sidebar" class="w-64"></div>
+
+  <!-- Main Content -->
+  <main class="flex-1 p-8">
+
+    <!-- Header -->
+    <div class="flex justify-between items-center mb-8">
+      <div>
+        <h1 class="text-3xl font-bold text-slate-800">Service Logs</h1>
+        <p class="text-slate-500 text-sm">Track maintenance & repairs</p>
+      </div>
+
+      <button class="bg-blue-600 hover:bg-blue-700 text-white px-5 py-2 rounded-lg text-sm font-medium shadow">
+        + Add Service Log
+      </button>
+    </div>
+
+    <!-- Table -->
+    <div class="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden">
+      <table class="w-full text-sm">
+        <thead class="bg-slate-50 text-slate-600 uppercase text-xs">
+          <tr>
+            <th class="p-4 text-left">ID</th>
+            <th class="p-4 text-left">Vehicle</th>
+            <th class="p-4 text-left">Type</th>
+            <th class="p-4 text-left">Description</th>
+            <th class="p-4 text-left">Cost</th>
+            <th class="p-4 text-left">Date</th>
+          </tr>
+        </thead>
+        <tbody class="text-slate-700">
+
+          <tr class="border-t">
+            <td class="p-4">S001</td>
+            <td class="p-4">Kenworth T680</td>
+            <td class="p-4">Engine Repair</td>
+            <td class="p-4">Turbo replacement</td>
+            <td class="p-4 font-medium">$4,500</td>
+            <td class="p-4">2026-02-18</td>
+          </tr>
+
+        </tbody>
+      </table>
+    </div>
+
+  </main>
+
+</div>
+
+<!-- Sidebar Loader (ONLY ONCE) -->
+<script>
+fetch("sidebar.html")
+  .then(res => res.text())
+  .then(data => {
+    document.getElementById("sidebar").innerHTML = data;
+
+    const current = window.location.pathname.split("/").pop();
+    document.querySelectorAll(".nav-link").forEach(link => {
+      if (link.getAttribute("href") === current) {
+        link.classList.add("bg-indigo-600","text-white","font-medium");
+      }
+    });
+  });
+</script>
+
+</body>
+</html>

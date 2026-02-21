@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Trips</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<script>
+let tripCounter = 2;
+
+function toggleForm() {
+  document.getElementById("tripForm").classList.toggle("hidden");
+}
+
+function addTrip() {
+
+  const route = document.getElementById("route").value;
+  const vehicle = document.getElementById("vehicle").value;
+  const driver = document.getElementById("driver").value;
+  const cargo = document.getElementById("cargo").value;
+
+  if (!route || !vehicle || !driver || !cargo) {
+    alert("Fill all fields");
+    return;
+  }
+
+  const table = document.getElementById("tripTable");
+
+  const newRow = document.createElement("tr");
+  newRow.className = "border-t border-slate-200 hover:bg-slate-50 transition";
+
+  newRow.innerHTML = `
+    <td class="px-6 py-4">T${String(tripCounter).padStart(3, '0')}</td>
+    <td class="px-6 py-4">${route}</td>
+    <td class="px-6 py-4">${vehicle}</td>
+    <td class="px-6 py-4">${driver}</td>
+    <td class="px-6 py-4">${cargo}</td>
+    <td class="px-6 py-4">
+      <span class="px-3 py-1 rounded-full text-xs font-medium bg-indigo-100 text-indigo-600">
+        IN PROGRESS
+      </span>
+    </td>
+    <td class="px-6 py-4">
+      <button class="bg-emerald-100 text-emerald-700 px-3 py-1 rounded-lg text-xs font-medium">
+        Complete
+      </button>
+    </td>
+  `;
+
+  table.prepend(newRow);
+
+  tripCounter++;
+
+  document.getElementById("tripForm").classList.add("hidden");
+  document.getElementById("route").value = "";
+  document.getElementById("vehicle").value = "";
+  document.getElementById("driver").value = "";
+  document.getElementById("cargo").value = "";
+}
+</script>
+<body class="bg-slate-50 text-slate-800">
+
+<div class="flex min-h-screen">
+
+  <!-- Sidebar -->
+  <div id="sidebar" class="w-64"></div>
+
+  <!-- Main Content -->
+  <main class="flex-1 p-8 space-y-6">
+
+    <div class="flex justify-between items-center">
+      <div>
+        <h2 class="text-2xl font-semibold">Trip Dispatcher</h2>
+        <p class="text-slate-500 text-sm">Assign and track trips</p>
+      </div>
+
+      <button onclick="toggleForm()" 
+  class="bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded-lg text-sm font-medium transition">
+  + New Trip
+</button>
+    </div>
+
+    <div class="bg-white border border-slate-200 rounded-xl shadow-sm overflow-hidden">
+        <div class="bg-white border border-slate-200 rounded-xl shadow-sm overflow-hidden"></div>
+        <!-- Hidden Form -->
+<div id="tripForm" class="hidden bg-white p-6 rounded-xl shadow-md border border-slate-200 space-y-4">
+
+  <div class="grid grid-cols-2 gap-4">
+    <input id="route" type="text" placeholder="Route" class="border p-2 rounded-lg">
+    <input id="vehicle" type="text" placeholder="Vehicle" class="border p-2 rounded-lg">
+    <input id="driver" type="text" placeholder="Driver" class="border p-2 rounded-lg">
+    <input id="cargo" type="text" placeholder="Cargo" class="border p-2 rounded-lg">
+  </div>
+
+  <button onclick="addTrip()"
+    class="bg-emerald-600 text-white px-4 py-2 rounded-lg text-sm">
+    Save Trip
+  </button>
+</div>
+      <table class="w-full text-sm">
+
+        <thead class="bg-slate-100 text-slate-600 uppercase text-xs tracking-wider">
+          <tr>
+            <th class="px-6 py-4 text-left">Trip</th>
+            <th class="px-6 py-4 text-left">Route</th>
+            <th class="px-6 py-4 text-left">Vehicle</th>
+            <th class="px-6 py-4 text-left">Driver</th>
+            <th class="px-6 py-4 text-left">Cargo</th>
+            <th class="px-6 py-4 text-left">Status</th>
+            <th class="px-6 py-4 text-left">Action</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          <tr class="border-t border-slate-200 hover:bg-slate-50 transition">
+            <td class="px-6 py-4">T001</td>
+            <td class="px-6 py-4">Chicago → Detroit</td>
+            <td class="px-6 py-4">Volvo VNL 860</td>
+            <td class="px-6 py-4">Sarah Chen</td>
+            <td class="px-6 py-4">15,000 kg</td>
+            <td class="px-6 py-4">
+              <span class="px-3 py-1 rounded-full text-xs font-medium bg-indigo-100 text-indigo-600">
+                IN PROGRESS
+              </span>
+            </td>
+            <td class="px-6 py-4">
+              <button class="bg-emerald-100 text-emerald-700 px-3 py-1 rounded-lg text-xs font-medium">
+                Complete
+              </button>
+            </td>
+          </tr>
+        </tbody>
+
+      </table>
+    </div>
+
+  </main>
+</div>
+
+<!-- Sidebar Loader Script (MUST be at bottom) -->
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    fetch("sidebar.html")
+      .then(res => res.text())
+      .then(data => {
+        document.getElementById("sidebar").innerHTML = data;
+
+        const current = window.location.pathname.split("/").pop();
+        document.querySelectorAll(".nav-link").forEach(link => {
+          if (link.getAttribute("href") === current) {
+            link.classList.add("bg-indigo-600", "text-white", "font-medium");
+          }
+        });
+      });
+  });
+</script>
+
+</body>
+</html>
